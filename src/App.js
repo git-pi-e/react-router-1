@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory,
+  Redirect,
+} from "react-router-dom";
 
 import About from "./Pages/About";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import Login from "./Pages/Login";
 import { useCookies } from "react-cookie";
+import MenuBar from "./Components/MenuBar";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -15,8 +23,10 @@ export default function App() {
   useEffect(() => {
     cookies.email && cookies.password ? setLoggedIn(true) : setLoggedIn(false);
   }, []);
+
   return (
     <Router>
+      {!(cookies.email && cookies.password) ? <Redirect to="/login" /> : null}
       <div>
         <nav>
           <ul>
@@ -39,15 +49,19 @@ export default function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/about">
+            <MenuBar title="About" />
             <About />
           </Route>
           <Route path="/profile">
-            {loggedIn ? <Profile /> : <div>you are not logged in </div>}
+            <MenuBar title="Profile" />
+            <Profile />
           </Route>
           <Route exact path="/">
+            <MenuBar title="Home" />
             <Home />
           </Route>
           <Route path="/login">
+            <MenuBar title="Login" />
             <Login />
           </Route>
         </Switch>
