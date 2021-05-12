@@ -15,9 +15,19 @@ import Login from "./Pages/Login";
 import { useCookies } from "react-cookie";
 import MenuBar from "./Components/MenuBar";
 
+const defaultOperations = {
+  a: 1,
+  b: 2,
+  c: 3,
+  addValues: (a, b, c) => {
+    return a + b + c;
+  },
+};
+
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
+  console.log(defaultOperations.addValues(5, 6, 7));
   const [cookies, setCookie, removeCookie] = useCookies(["login-info"]);
 
   useEffect(() => {
@@ -28,23 +38,6 @@ export default function App() {
     <Router>
       {!(cookies.email && cookies.password) ? <Redirect to="/login" /> : null}
       <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/profile">Profile</Link>
-            </li>
-            <li>
-              <Link to="/login">Log In</Link>
-            </li>
-          </ul>
-        </nav>
-
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
